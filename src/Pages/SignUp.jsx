@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import AxiosInstance from "../utils/AxiosInstance";
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
@@ -30,7 +30,7 @@ const SignUp = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:8000/api/signup/", formData);
+const response = await AxiosInstance.post("signup/", formData);
       toast.success(response.data.message || "Account created successfully!");
       navigate("/login");
     } catch (error) {

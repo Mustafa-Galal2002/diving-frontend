@@ -7,7 +7,7 @@ const useAuthInterceptor = () => {
 
   useEffect(() => {
     const axiosInstance = axios.create({
-      baseURL: "http://localhost:8000/api",
+      baseURL: import.meta.env.VITE_API_URL, // ✅ استخدم متغير البيئة
     });
 
     axiosInstance.interceptors.response.use(
@@ -17,14 +17,14 @@ const useAuthInterceptor = () => {
           localStorage.removeItem("authToken");
           localStorage.removeItem("access_token");
           localStorage.removeItem("refresh_token");
-          navigate("/login"); // Redirect to login
+          navigate("/login"); // إعادة توجيه لتسجيل الدخول
         }
         return Promise.reject(error);
       }
     );
 
     return () => {
-      axiosInstance.interceptors.response.eject();
+      // لو حبيت توقف الـ interceptor
     };
   }, [navigate]);
 };

@@ -1,7 +1,8 @@
 import axios from "axios";
 
-const baseURL = "http://localhost:8000/api/"; // test localhost environment ...
-// const baseURL = "https://xxx.xxx.xxxx/api/"; // on railway.app testing...
+// ✅ Use base URL from .env
+const baseURL = import.meta.env.VITE_API_URL;
+
 const AxiosInstance = axios.create({
   baseURL: baseURL,
   timeout: 10000,
@@ -11,18 +12,16 @@ const AxiosInstance = axios.create({
   },
 });
 
-
 AxiosInstance.interceptors.request.use(
   (config) => {
     const tokenString = localStorage.getItem("authToken");
     if (tokenString) {
-      const tokenData = JSON.parse(tokenString); // 👈 Parse the string
+      const tokenData = JSON.parse(tokenString);
       config.headers["Authorization"] = `Bearer ${tokenData.access}`;
     }
     return config;
   },
   (error) => Promise.reject(error)
 );
-
 
 export default AxiosInstance;

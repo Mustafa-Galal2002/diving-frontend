@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const AuthContext = createContext();
-
 export default AuthContext;
 
 export const AuthProvider = ({ children }) => {
@@ -23,12 +22,12 @@ export const AuthProvider = ({ children }) => {
   );
 
   const navigate = useNavigate();
+  const BASE_URL = import.meta.env.VITE_API_URL;
 
-  // ✅ تم تعديل loginUser ليستقبل username و password
   const loginUser = async (e, username, password) => {
     e.preventDefault();
 
-    const response = await fetch("/api/token/", {
+    const response = await fetch(`${BASE_URL}/token/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -74,7 +73,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const updateToken = async () => {
-    const response = await fetch("/api/token/refresh/", {
+    const response = await fetch(`${BASE_URL}/token/refresh/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -102,7 +101,7 @@ export const AuthProvider = ({ children }) => {
   const isTokenExpired = (token) => {
     try {
       const decoded = jwtDecode(token);
-      const currentTime = Date.now() / 1000; // seconds
+      const currentTime = Date.now() / 1000;
       return decoded.exp < currentTime;
     } catch (error) {
       return true;
@@ -127,7 +126,7 @@ export const AuthProvider = ({ children }) => {
           updateToken();
         }
       }
-    }, 1000 * 10 * 60); // كل 10 دقايق
+    }, 1000 * 10 * 60);
 
     return () => clearInterval(interval);
   }, [authToken]);

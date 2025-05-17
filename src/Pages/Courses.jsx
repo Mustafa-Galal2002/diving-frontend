@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Scripts from "../components/Scripts"; // adjust path if needed
+import Scripts from "../Components/Scripts";
 import "./course.css";
 import AxiosInstance from "../utils/AxiosInstance";
 import { Link } from "react-router-dom";
